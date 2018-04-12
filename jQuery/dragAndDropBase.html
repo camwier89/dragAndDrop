@@ -75,9 +75,14 @@
                   });                 
             }});
 
-         $("#btnRemove").click(function () {
+         $("#btnClear").click(function () {
                   $("#itemlist li").empty();
                  $(".itemcreate").remove();
+
+            });                
+         $("#btnRemove").click(function () {
+                  $("#itemlist li").eq(0).remove();
+                 
 
             });                
       });
@@ -89,7 +94,7 @@
 <body>
 
    <div>
-      <h2>Hello jQuery UI - Drag 'N' Drop Test</h2>
+      <h2>jQuery UI - "Drag'N'Drop" Proof Of Concept</h2>
    </div>
 
    <div>
@@ -118,7 +123,10 @@
       </div>
 
       <div>
-            <button type='button' id='btnRemove'>Remove</button>
+
+            <button type='button' id='btnRemove'>Remove Top</button>
+            <button type='button' id='btnClear'>Clear All</button>
+            
       </div>
 
      
