@@ -50,14 +50,22 @@
 
       $(document).ready(function() {
 
-         $(".item").draggable({ containment: 'document', revert: true,
+         
+
+
+         $(".item").draggable({                
+               containment: 'document', 
+               revert: true,
             start: function() {
+               console.log('Drag');
                contents = $(this).text();
             }
+            
       });
          
          $('#list').droppable({ hoverClass: 'border', accept: '.item',
             drop: function() {
+               console.log('Drop');
 
             $('#itemlist').append('<li class="itemcreate">'+ contents + '</li>');
 
@@ -69,22 +77,34 @@
                         connectToSortable: "#itemlist",
                         revert: "invalid",
                         start: function () {
+                              console.log(event);
+                              console.log('Sort');
                               contents = $(this).text();
+                              console.log(contents);
+                              
+                              
                               
                         },                       
                   });                 
             }});
 
          $("#btnClear").click(function () {
+               console.log("clr click");
                   $("#itemlist li").empty();
-                 $(".itemcreate").remove();
+                  $(".itemcreate").remove();
+            });
 
-            });                
          $("#btnRemove").click(function () {
+               console.log("rm click")
                   $("#itemlist li").eq(0).remove();
-                 
+            });
+         $("#btnLog").click(function() {
+               newList = $("#itemlist").text();
+               console.log(newList);
+         })
+         
 
-            });                
+                     
       });
 
    </script>
@@ -126,6 +146,7 @@
 
             <button type='button' id='btnRemove'>Remove Top</button>
             <button type='button' id='btnClear'>Clear All</button>
+            <button type='button' id='btnLog'>Log List</button>
             
       </div>
 
