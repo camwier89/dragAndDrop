@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <title>Untitled</title>
+
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.common.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.rtl.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.default.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.mobile.all.min.css">
+
+   <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/angular.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/jszip.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.all.min.js"></script>
+</head>
+
+<body>
+   <div>
+      <h2>All Items</h2>
+      <ul>
+         <li class="draggable">item1</li>
+         <li class="draggable">item2</li>
+         <li class="draggable">item3</li>
+         <li class="draggable">item4</li>
+      </ul>
+   </div>
+
+   <div>
+      <h2>New List</h2>
+      <div id="newlist">
+      </div>
+   </div>
+
+   <script>
+      var draggable = $(".draggable").kendoDraggable({
+         hint: function (element) {
+            contents = $(element).text();
+            console.log(contents);
+            return element.clone();
+         }
+      });
+
+      $("#newlist").kendoDropTarget({
+         drop: function (e) {
+            console.log(e.draggable.element.text());
+            e.dropTarget.append('<div class="itemcreate">' + e.draggable.element.prop('outerHTML') + '</div>');
+         }
+      });
+   </script>
+
+   <style>
+      #newlist {
+         width: 300px;
+         height: 280px;
+         border: 3px solid black;
+         border-radius: 3px;
+      }
+   </style>
+</body>
+
+</html>

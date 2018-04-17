@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="utf-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+   <title>KendoUI - list</title>
+
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.common.min.css" />
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.rtl.min.css" />
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.silver.min.css" />
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.mobile.all.min.css" />
+
+   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/jszip.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.all.min.js"></script>
+
+   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+</head>
+<body>
+   <div id="example" role="application">
+      <div class="demo-section k-content">
+         <div>
+            <label for="optional" id="employees">All Items</label>
+            <label for="selected">New List</label>
+            <br />
+            <select id="optional">
+               <option>Choose Clothes</option>
+               <option>Have A Shower</option>
+               <option>Make Breakfast</option>
+               <option>Take Medication</option>               
+               <option>Watch TV</option>
+               <option>Listen To Radio</option>
+               <option>Message Care Giver</option>
+            </select>
+            <select id="selected"></select>
+         </div>
+      </div>
+      <script>
+         $(document).ready(function () {
+            $("#optional").kendoListBox({
+               connectWith: "selected",
+               toolbar: {
+                  tools: ["moveUp", "moveDown", "transferTo", "transferFrom", "transferAllTo", "transferAllFrom", "remove"]
+               }
+            });
+
+            $("#selected").kendoListBox();
+         });
+      </script>
+   </div>
+
+   <style>
+      .demo-section label {
+         margin-bottom: 5px;
+         font-weight: bold;
+         display: inline-block;
+      }
+
+      #employees {
+         width: 270px;
+      }
+
+      #example .demo-section {
+         max-width: none;
+         width: 515px;
+      }
+
+      #example .k-listbox {
+         width: 236px;
+         height: 310px;
+      }
+
+      #example .k-listbox:first-of-type {
+         width: 270px;
+         margin-right: 1px;
+      }
+   </style>
+
+
+</body>
+
+</html>

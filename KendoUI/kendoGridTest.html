@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <title>Drag and Drop between Listviews 07</title>
+
+   <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.1.412/styles/kendo.common.min.css">
+   <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.1.412/styles/kendo.rtl.min.css">
+   <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.1.412/styles/kendo.default.min.css">
+   <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.1.412/styles/kendo.mobile.all.min.css">
+
+   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+   <script src="http://kendo.cdn.telerik.com/2016.1.412/js/angular.min.js"></script>
+   <script src="http://kendo.cdn.telerik.com/2016.1.412/js/jszip.min.js"></script>
+   <script src="http://kendo.cdn.telerik.com/2016.1.412/js/kendo.all.min.js"></script>
+</head>
+
+<body>
+   <script type="text/x-kendo-tmpl" id="mappedtagtemplate">     
+      <div style=""display:inline-block"">
+      <div class="tags k-block"> #:Name# </div>
+      </div>
+   </script>
+   
+   <div style="padding:30px;">
+      <table>
+         <tr>
+            <td>
+               <h2>Unmapped Tags</h2>
+            </td>
+            <td>
+               <h2>Mapped Tags</h2>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <div id="unmappedtag_listview" class="tagcontainer"></div>
+            </td>
+            <td>
+               <div id="mappedtag_listview" class="tagcontainer"></div>
+            </td>
+         </tr>
+      </table>
+   </div>
+   <script>
+
+      var mappedtag_taglist = [{
+         "ID": 100, "Name":
+            "Razor View"
+      }, { "ID": 101, "Name": "JQuery" },
+      { "ID": 102, "Name": "MS Sql" },
+      { "ID": 103, "Name": "My Sql" },
+      { "ID": 104, "Name": "Ruby" },
+      { "ID": 105, "Name": "SQL" }];
+
+      var mappedtag_datasource = new kendo.data.DataSource({
+         data: mappedtag_taglist
+      });
+
+      var unmappedtag_taglist = [{
+         "ID": 1,
+         "Name": "ASP.NET"
+      },
+      { "ID": 2, "Name": "Kendo UI" },
+      { "ID": 3, "Name": "CSharp" }, {
+         "ID": 4,
+         "Name": "Java Script"
+      },
+      { "ID": 5, "Name": "PHP" }, {
+         "ID": 6,
+         "Name": "Java"
+      }, { "ID": 7, "Name": "CSS" },
+      { "ID": 8, "Name": "HTML" }, {
+         "ID": 9,
+         "Name": "Unix"      
+}, { "ID": 10, "Name": "Mac" }];
+
+      var unmappedtag_datasource = new kendo.data.DataSource({
+         data: unmappedtag_taglist
+      });
+
+      $("#mappedtag_listview").kendoListView({
+         dataSource: mappedtag_datasource,
+         template: '<div class="tags move k-block">  #:Name# </div>'
+      });
+
+      $("#unmappedtag_listview").kendoListView({
+         dataSource: unmappedtag_datasource,
+         template: '<div class="tags move k-block">  #:Name# </div>'
+      });
+
+
+      $("#mappedtag_listview").kendoDraggable({
+         filter: ".move",
+         hint: function (element) {
+            return element.clone();
+         }
+      });
+
+      $("#unmappedtag_listview").kendoDraggable({
+         filter: ".move",
+         hint: function (element) {
+            return element.clone();
+         }
+      });
+
+      $("#mappedtag_listview").kendoDropTarget({
+         dragenter: function (e) {
+            e.draggable.hint.css("opacity", 0.6);
+         },
+         dragleave: function (e) {
+            e.draggable.hint.css("opacity", 1);
+         },
+         drop: function (e) {
+            var item = unmappedtag_datasource.getByUid(e.draggable.hint.data().uid);
+            mappedtag_datasource.add(item);
+            unmappedtag_datasource.remove(item);
+            console.error("MappedTags", kendo.stringify(mappedtag_datasource.data()));
+            console.error("UnmappedTags", kendo.stringify(unmappedtag_datasource.data()));
+         }
+      });
+
+      $("#unmappedtag_listview").kendoDropTarget({
+         dragenter: function (e) {
+            e.draggable.hint.css("opacity", 0.6);
+         },
+         dragleave: function (e) {
+            e.draggable.hint.css("opacity", 1);
+         },
+         drop: function (e) {
+            var item = mappedtag_datasource.getByUid(e.draggable.hint.data().uid);
+            unmappedtag_datasource.add(item);
+            mappedtag_datasource.remove(item);
+            console.error("MappedTags", kendo.stringify(mappedtag_datasource.data()));
+            console.error("UnmappedTags", kendo.stringify(unmappedtag_datasource.data()));
+         }
+      });
+   </script>
+   <style>
+      .move {
+         cursor: move;
+      }
+
+      .tagcontainer {
+         float: left;
+         margin-left: 10px;
+         min-width: 400px;
+         min-height: 510px;
+         width: 400px;
+      }
+
+      .tagitemcls {
+         width: 24px;
+         float: left;
+         margin-left: -18px;
+         margin-top: 10px;
+         padding-top: 6px;
+         padding-bottom: 8px;
+         padding-left: 2px;
+      }
+
+      .tags {
+         margin: 10px;
+         padding: 10px;
+         float: left;
+         color: #000;
+      }
+
+      table>div {
+         border: 1px solid #CDCDCD;
+      }
+   </style>
+</body>
+
+</html>
