@@ -13,8 +13,7 @@
 
    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-   <style>
-
+   <style>      
       ul {
          width: 150px;
          padding: 0px;
@@ -43,10 +42,13 @@
          width: 250px;
          height: 300px;
          border: 2px solid black;
+         max-width: 100%;
+         overflow-x: hidden;
+         overflow-y: scroll;
          
       }
 
-      #screen {
+      #body {
             width: 900px;
             height: 320px;
             border-top-color: black;
@@ -67,36 +69,164 @@
             margin-left: 90px;
       }
 
-      
-   
+      .msginput {
+            width: 170px;
+            height: 200px;
+      }
+
+      .item {
+            border: 2px solid black;
+            margin: 1px;
+      }
+
+      /* The switch - the box around the slider */
+      .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {display:none;}
+
+      /* The slider */
+      .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+      }
+
+      .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+      }
+
+      input:checked + .slider {
+      background-color: #2196F3;
+      }
+
+      input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+      }
+
+      input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+      border-radius: 34px;
+      }
+
+      .slider.round:before {
+      border-radius: 50%;
+      }  
    </style>
 
    <script>
+      $(document).ready(function () {
+            // vvv for time window vvv
+            var slider = document.getElementById("hourRange");
+            var output = document.getElementById("displayHour");
+            output.innerHTML = slider.value;
+            slider.oninput = function (e) {
+                  $('#displayHour').html(this.value);
+            };
+            var slider = document.getElementById("minRange");
+            var output = document.getElementById("displayMin");
+            output.innerHTML = slider.value;
+            slider.oninput = function () {
+                  $('#displayMin').html(this.value);
 
+            };
+            var slider = document.getElementById("secRange");
+            var output = document.getElementById("displaySec");
+            output.innerHTML = slider.value;
+            slider.oninput = function () {
+                  $('#displaySec').html(this.value);
+            };
+
+            // vvv for radio window vvv
+            var slider = document.getElementById("hourRangeB");
+            var output = document.getElementById("displayHourB");
+            output.innerHTML = slider.value;
+            slider.oninput = function (e) {
+                  $('#displayHourB').html(this.value);
+            };
+            var slider = document.getElementById("minRangeB");
+            var output = document.getElementById("displayMinB");
+            output.innerHTML = slider.value;
+            slider.oninput = function () {
+                  $('#displayMinB').html(this.value);
+
+            };
+            var slider = document.getElementById("secRangeB");
+            var output = document.getElementById("displaySecB");
+            output.innerHTML = slider.value;
+            slider.oninput = function () {
+                  $('#displaySecB').html(this.value);
+            };
+
+            // vvv for volume window vvv
+            var slider = document.getElementById("volrange");
+            var output = document.getElementById("displayVolume");
+            output.innerHTML = slider.value;
+            slider.oninput = function () {
+                  $('#displayVolume').html(this.value);
+            };
+            
+            // vvv for variable volume window vvv
+            var slider = document.getElementById("startvolrange");
+            var output = document.getElementById("displayStartVol");
+            output.innerHTML = slider.value;
+            slider.oninput = function () {
+                  $('#displayStartVol').html(this.value);
+            };
+            var slider = document.getElementById("endvolrange");
+            var output = document.getElementById("displayEndVol");
+            output.innerHTML = slider.value;
+            slider.oninput = function () {
+                  $('#displayEndVol').html(this.value);
+            };
+            
+      });
+   </script>
+
+   <script>
       $(document).ready(function() {
 
-         
-
-
          $(".item").draggable({                
-               containment: 'document', 
+               containment: '#screen',
+               scroll: false,
                revert: true,
             start: function() {
                console.log('Drag');
                contents = $(this).text();
-            }
-            
-      });
-         
+            }            
+      }); 
+
          $('#list').droppable({ hoverClass: 'border', accept: '.item',
             drop: function() {
+                  // $('#window2').dialog("open");
                console.log('Drop');
-
-            $('#itemlist').append('<li class="itemcreate w3-center w3-hover-light-grey">'+ contents + '</li>');
-
-            
+            $('#itemlist').append('<li class="itemcreate w3-center w3-hover-light-grey">'+ contents + '</li>');            
             $('#itemlist').sortable();
-
             $(".itemcreate").draggable({
                         containment: 'document', 
                         connectToSortable: "#itemlist",
@@ -105,10 +235,7 @@
                               console.log(event);
                               console.log('Sort');
                               contents = $(this).text();
-                              console.log(contents);
-                              
-                              
-                              
+                              console.log(contents);                             
                         },                       
                   });                 
             }});
@@ -118,7 +245,6 @@
                   $("#itemlist li").empty();
                   $(".itemcreate").remove();
             });
-
          $("#btnRemove").click(function () {
                console.log("rm click")
                   $("#itemlist li").eq(0).remove();
@@ -126,37 +252,97 @@
          $("#btnLog").click(function() {
                newList = $("#itemlist").text();
                console.log(newList);
-         })
-         
+            });
 
-                     
+         $('#HowLong').dialog({
+               autoOpen: false,              
+               modal: true,
+         });
+
+         $('#PlayMusic').dialog({               
+               autoOpen: false,             
+               modal: true,
+         });
+         $('#Artist').selectmenu();
+         $('#Album').selectmenu();
+         $('#Song').selectmenu();
+
+         $('#SayPrayer').dialog({
+               autoOpen: false,
+               modal: true,
+         });
+         $('#Prayer').selectmenu();
+
+         $('#SayMessage').dialog({
+               autoOpen: false,
+               modal: true,
+         });
+
+         $('#PlayRadio').dialog({
+               autoOpen: false,
+               modal: true,
+         });
+         $('#Radio').selectmenu();
+
+         $('#RunProgram').dialog({
+               autoOpen: false,
+               modal: true,
+         });
+         $('#Program').selectmenu();
+
+         $('#SetVol').dialog({
+               autoOpen: false,
+               modal: true,
+         });
+
+         $('#VariableVol').dialog({
+               autoOpen: false,
+               modal: true,
+         });
+
+         $('#TurnOnOff').dialog({
+               autoOpen: false,
+               modal: true,
+         });
+         $('#System').selectmenu();
+                             
       });
-
    </script>
 
 </head>
 
 <body>
 
-      <div class="w3-container w3-dark-grey">
-
+      <div id="screen" class="w3-container w3-dark-grey">
             <div class="w3-container">
                   <h2>jQuery UI - "Drag'N'Drop" Proof Of Concept</h2>
             </div>
-
             <div>
-
-                  <div id="screen" class="w3-row w3-container">
-
+                  <div  id="body" class="w3-row w3-container">
                         <div id="home" class="w3-container w3-light-green w3-col m4">
                         <h3 class="w3-center">Daily Activities</h3>
                         <ul>
-                              <li class="item w3-center w3-hover-light-grey">Take Medicine</li>
-                              <li class="item w3-center w3-hover-light-grey">Brush Teeth</li>
-                              <li class="item w3-center w3-hover-light-grey">Make Breakfast</li>
-                              <li class="item w3-center w3-hover-light-grey">Pick Clothes</li>
-                              <li class="item w3-center w3-hover-light-grey">Listen To Radio</li>
-                              <li class="item w3-center w3-hover-light-grey">Watch TV</li>
+                              <li class="item w3-center w3-hover-light-grey">Pick Clothes </li>
+                              <li class="item w3-center w3-hover-light-grey">Brush Teeth </li>
+                              <li class="item w3-center w3-hover-light-grey">Take Medication </li>       
+                              <li class="item w3-center w3-hover-light-grey">Make Breakfast </li>
+                              <li class="item w3-center w3-hover-light-grey">Make Lunch </li>
+                              <li class="item w3-center w3-hover-light-grey">Make Dinner </li>           
+                              <li class="item w3-center w3-hover-light-grey">Contact Caregiver </li>     
+                              <li class="item w3-center w3-hover-light-grey">Pause </li>
+                              <li class="item w3-center w3-hover-light-grey">Announce Date </li>
+                              <li class="item w3-center w3-hover-light-grey">Announce Time </li>
+                              <li class="item w3-center w3-hover-light-grey">Say Message </li>
+                              <li class="item w3-center w3-hover-light-grey">Play Music </li>
+                              <li class="item w3-center w3-hover-light-grey">Play Random Music </li>
+                              <li class="item w3-center w3-hover-light-grey">Play the Radio </li>
+                              <li class="item w3-center w3-hover-light-grey">Tell a Joke </li>
+                              <li class="item w3-center w3-hover-light-grey">Help Meditate </li>
+                              <li class="item w3-center w3-hover-light-grey">Say Prayer </li>
+                              <li class="item w3-center w3-hover-light-grey">Set Volume Level </li>
+                              <li class="item w3-center w3-hover-light-grey">Variable Volume </li>
+                              <li class="item w3-center w3-hover-light-grey">Run a Program </li>
+                              <li class="item w3-center w3-hover-light-grey">Device On/Off </li>       
                         </ul>
                         </div>
 
@@ -171,22 +357,211 @@
 
                         <div id='list' class="w3-container w3-light-blue w3-col m4">
                         <h3 class="w3-center">New Routine</h3>
-                              <ul id="itemlist">
-                                    
+                              <ul id="itemlist">                                   
 
                               </ul>
                         </div>
-
-                        
-
                   </div>
-
-                  
-
-            
-
             </div>
       </div>
+
+      <div id="HowLong" title="Time">
+            <h3>How Long?</h3>
+            <div class="slidecontainer">
+                  <div>
+                        <p>Hours:
+                              <span id="displayHour"></span>
+                        </p>
+                        <input type="range" min="0" max="24" value="0" class="hourslider" id="hourRange">
+                  </div>
+                  <div>
+                        <p>Minutes:
+                              <span id="displayMin"></span>
+                        </p>
+                        <input type="range" min="0" max="60" value="0" class="minslider" id="minRange">
+                  </div>
+                  <div>
+                        <p>Seconds:
+                              <span id="displaySec"></span>
+                        </p>
+                        <input type="range" min="0" max="60" value="0" class="secslider" id="secRange">
+                  </div>
+            </div>
+            <button>Okay</button>
+      </div>
+
+      <div id="PlayMusic" title="Music">
+            <form>
+                  <fieldset>
+                        <label for="Artist">Select an Artist</label>
+                        <select name="Artist" id="Artist">
+                              <option selected="selected"></option>
+                              <option>The Righteous Brothers</option>
+                              <option>Elvis</option>
+                              <option>The Beatles</option>
+                              <option>Hank Williams</option>
+                              <option>Del Shannon</option>
+                              <option>The Statler Brothers</option>                              
+                        </select>
+                        <label for="Album">Select an Album</label>
+                        <select name="Album" id="Album">
+                              <option selected="selected"></option>
+                              <option>Top Gun</option>
+                              <option>From Memphis to Vegas</option>                              
+                              <option>Help!</option>
+                              <option>Ramblin' Man</option>
+                              <option>Runaway</option>
+                              <option>Flowers on the Wall</option>
+                        </select>
+                        <label for="Song">Select a Song</label>
+                        <select name="Song" id="Song">
+                              <option selected="selected"></option>
+                              <option>You've lost that loving feeling</option>
+                              <option>Suspicious Minds</option>
+                              <option>Help!</option>
+                              <option>Ramblin' Man</option>
+                              <option>Runaway</option>
+                              <option>Counting Flowers on the Wall</option>
+                        </select>
+                        <button>Okay</button>
+                  </fieldset>
+            </form>
+      </div>
+
+      <div id="SayPrayer" title="Prayer">
+            <form>
+                  <fieldset>
+                        <label for="Prayer">Select a Prayer</label>
+                        <select name="Prayer" id="Prayer">
+                              <option selected="selected"></option>
+                              <option>Our Father</option>
+                              <option>Hail Mary</option>
+                              <option>Glory Be</option>
+                              <option>Apostles Creed</option>
+                              <option>Prayer to Archangel St. Michael</option>
+                        </select>
+                        <button>Okay</button>
+                  </fieldset>
+            </form>
+      </div>
+
+      <div id="SayMessage" title="Message">
+            <h3>Type Message to Play:</h3>
+            <form>                  
+                  <textarea type="text" class="msginput"></textarea>
+                  <br />
+                  <button>Okay</button>
+            </form>
+      </div>
+
+      <div id="PlayRadio" title="Radio">
+            <form>
+                  <fieldset>
+                        <label for="Radio">Select a Station:</label>
+                        <select name="Radio" id="Radio">
+                              <option selected="selected"></option>
+                              <option>88.7</option>
+                              <option>95.9</option>
+                              <option>98.1</option>
+                              <option>102.1</option>
+                              <option>105.3</option>
+                              <option>107.9</option>                              
+                        </select>
+                  </fieldset>
+                  <h3>How Long?</h3>
+                  <div class="slidecontainer">
+                        <div>
+                              <p>Hours:
+                                    <span id="displayHourB"></span>
+                              </p>
+                              <input type="range" min="0" max="24" value="0" class="hoursliderB" id="hourRangeB">
+                        </div>
+                        <div>
+                              <p>Minutes:
+                                    <span id="displayMinB"></span>
+                              </p>
+                              <input type="range" min="0" max="60" value="0" class="minsliderB" id="minRangeB">
+                        </div>
+                        <div>
+                              <p>Seconds:
+                                    <span id="displaySecB"></span>
+                              </p>
+                              <input type="range" min="0" max="60" value="0" class="secsliderB" id="secRangeB">
+                        </div>
+                  </div>
+                  <button>Okay</button>
+            </form>
+      </div>
+
+      <div id="RunProgram" name="Program">
+            <form>
+                  <fieldset>
+                        <label for="Program">Select a Program</label>
+                        <select name="Program" id="Program">
+                              <option selected="selected"></option>
+                              <option>Test</option>                              
+                        </select>
+                        <h3>Specification:</h3>
+                        <textarea type="text" class="msginput"></textarea>
+                        <br />                        
+                        <button>Okay</button>
+                  </fieldset>
+            </form>
+      </div>
+
+      <div id="SetVol" name="SetVolume">
+            <div>
+                  <h2>Set System Volume</h2>
+                  <p>Volume (%):
+                        <span id="displayVolume"></span>
+                  </p>
+                  <input type="range" min="20" max="100" value="50" class="volslider" id="volrange">
+                  <br />
+                  <button>Okay</button>
+            </div>
+      </div>
+
+      <div id="VariableVol" name="VariableVolume">
+            <div>
+                  <h2>System Volume Fade</h2>
+                  <p>Start Volume (%):
+                        <span id="displayStartVol"></span>
+                  </p>
+                  <input type="range" min="20" max="100" value="75" class="varvolslider" id="startvolrange">
+                  <p>End Volume (%):
+                        <span id="displayEndVol"></span>
+                  </p>
+                  <input type="range" min="20" max="100" value="30" class="varvolslider" id="endvolrange">
+                  <br />
+                  <button>Okay</button>
+            </div>
+      </div>
+
+      <div id="TurnOnOff" name="OnOff">
+            <div>
+                  <h2>System On / Off</h2>
+                  <form>
+                        <fieldset>
+                              <label for="System">Select a System:</label>
+                              <select name="System" id="System">
+                                    <option selected="selected"></option>
+                                    <option>My System</option>
+                                    <option>Test System</option>
+                                    <option>Other System</option>                                    
+                              </select>
+                        </fieldset>
+                        <br />
+                        <p>OFF <label class="switch">
+                              <input type="checkbox">                              
+                              <span class="slider round"></span>
+                        </label> ON</p>
+                        <br />
+                        <br />
+                        <button>Okay</button>
+            </div>
+      </div>
+
+
    
 </body>
 </html>
