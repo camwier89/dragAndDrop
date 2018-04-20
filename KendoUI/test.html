@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <title>test</title>
+
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.common.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.rtl.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.default.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.mobile.all.min.css">
+
+   <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/angular.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/jszip.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.all.min.js"></script>
+   <script src="http://cdn.kendostatic.com/2014.2.716/js/kendo.all.min.js"></script>
+
+   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  
+</head>
+
+<body>
+
+      <h1>All Activities</h1>
+      <div id="draggable" class="w3-half">
+            <div class="list-item sortable w3-btn w3-black">Make Breakfast</div>
+            <div class="list-item sortable w3-btn w3-black">Take Medication</div>
+            <div class="list-item sortable w3-btn w3-black">Brush Teeth</div>
+      </div>
+
+      <h1>New Routine</h1>
+      <div id="sortable" class="w3-half">
+
+      </div>
+
+      <script>
+            $("#sortable").kendoSortable({
+                  placeholder: function placeholder(e) {
+                        return e.clone().addClass("ob-hint");
+                  },
+                  end: function (e) {
+                        console.log("dropped 1");
+                        if (e.action === "receive") {
+                              var item = $("<div class='new-item w3-btn w3-black'>" + e.item.text() + "<span class='remove w3-btn w3-grey'>X</button></div>");
+                              if (e.newindex === 0) item.insertBefore("#sortable.items[0]", this.element);
+                              else item.insertAfter("#sortable div:nth(" + e.newIndex + ")", this.element);
+                              e.preventDefault();
+                        }
+                  }
+            });
+
+            $("#draggable").kendoSortable({
+                  connectWith: "#sortable",
+                  placeholder: function placeholder(e) {
+                        return e.clone().addClass("ob-hint");
+                  },
+                  hint: function (e) {
+                        return e.clone().addClass("ob-hint");
+                  },
+                  filter: ".sortable",
+                  start: function () {
+                        $("#draggable div").each(function () {
+                              $(this).removeClass("sortable");
+                        });
+                  },
+                  end: function () {
+                        $("#draggable div").each(function () {
+                              $(this).addClass("sortable");
+                        });
+                  },
+                  change: function () { },
+                  move: function () { }
+            });
+
+
+      </script>
+
+      <style>
+            .list-item, .new-item {
+                  width: 200px;
+                  height: 35px;
+                  margin: 2px;
+      
+            }
+      
+            .ob-hint {
+                  background: beige !important;
+                  opacity: 0.5;
+                  display: block;
+                  width: 300px;
+                  height: 400px;
+                  background-color: beige;
+                  color: black;
+            }
+      
+            #sortable {
+                  border: 2px solid black;
+                  padding: 5px;
+                  margin: 5px;
+                  width: 250px;
+                  height: 350px;
+            }
+      
+            #draggable {
+                  border: 2px solid black;
+                  padding: 5px;
+                  margin: 5px;
+                  width: 250px;
+                  height: 350px;                  
+            }
+      </style>
+</body>
+
+</html>

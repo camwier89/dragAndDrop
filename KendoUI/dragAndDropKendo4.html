@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>KendoUI - Drag'N'Drop</title>
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.common.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.rtl.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.default.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.mobile.all.min.css">
+
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2018.1.221/js/angular.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2018.1.221/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.all.min.js"></script>
+    
+    <script type="text/x-kendo-tmpl" id="mappedtagtemplate">    
+      <div style=""display:inline-block"">
+      <div class="tags k-block"> #:Name# </div>
+      </div>
+    </script>
+
+    <script>
+      $(document).ready(function() {
+      var slider = document.getElementById("hourRange");
+        var output = document.getElementById("displayHour");            
+        output.innerHTML = slider.value;
+        slider.oninput = function (e) {
+          $('#displayHour').html(this.value);
+        };
+      var slider = document.getElementById("minRange");
+        var output = document.getElementById("displayMin");
+        output.innerHTML = slider.value;
+        slider.oninput = function () {
+          $('#displayMin').html(this.value);
+
+        };
+      var slider = document.getElementById("secRange");
+        var output = document.getElementById("displaySec");
+        output.innerHTML = slider.value;
+        slider.oninput = function () {
+          $('#displaySec').html(this.value);
+        };
+      });
+    </script>
+
+  </head>
+
+  <body>    
+
+    <div style="padding:30px;">
+      <table>
+        <tr>
+          <td>
+            <h2>All Items</h2>
+          </td>
+          <td>
+            <h2>New Routine</h2>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div id="itemlist" class="itempanel"></div>
+          </td>
+          <td>
+            <div id="newlist" class="itempanel"></div>
+          </td>
+        </tr>
+      </table>      
+    </div>
+
+    <div id="window">
+      <h2>How Long?</h2>
+      <div class="slidecontainer">
+        <div>
+          <p>Hours: <span id="displayHour"></span></p>
+          <input type="range" min="0" max="24" value="0" class="hourslider" id="hourRange">         
+        </div>
+        <div>
+          <p>Minutes: <span id="displayMin"></span></p>
+          <input type="range" min="0" max="60" value="0" class="minslider" id="minRange">      
+        </div>
+        <div>
+          <p>Seconds: <span id="displaySec"></span></p>
+          <input type="range" min="0" max="60" value="0" class="secslider" id="secRange">        
+        </div>
+      </div>      
+    </div>
+
+    <script>
+      var allitems_list = [
+        {'ID': 001, 'Name': "Have A Shower"},
+        {'ID': 002, 'Name': "Choose Clothes"},
+        {'ID': 003, 'Name': "Make Breakfast"},
+        {'ID': 004, 'Name': "Take Medication"},
+        {'ID': 005, 'Name': "Brush Teeth"},
+        {'ID': 006, 'Name': "Watch TV"},
+        {'ID': 007, 'Name': "Listen to Radio"},
+        {'ID': 008, 'Name': "Read a Book"},
+        {'ID': 009, 'Name': "Contact Caregiver"},
+      ];
+      var allitems_datasource = new kendo.data.DataSource({
+        data: allitems_list
+      });
+      var newitems_list = [];
+      var newitems_datasource = new kendo.data.DataSource({
+        data: newitems_list
+      });
+
+      $('#itemlist').kendoListView({
+        dataSource: allitems_datasource,
+        template: "<div class='tags k-block move'> #:Name# </div>"
+      });
+
+      $('#newlist').kendoListView({
+        dataSource: newitems_datasource,
+        template: "<div class='tags k-block move'> #:Name# </div>"
+      });
+
+      // $('#itemlist').kendoDraggable({
+      //   filter: ".move",
+      //   hint: function(element) {
+      //     return element.clone();
+      //   }
+      // });
+
+      // $('#newlist').kendoDraggable({
+      //   filter: ".move",
+      //   hint: function(element) {
+      //     return element.clone();
+      //   }
+      // });
+
+       $(".move").click( function(event)
+            {
+               //var clicked = $(this); // jQuery wrapper for clicked element
+               //console.log($(this).text());
+            });
+
+      $('#itemlist').kendoSortable({
+          connectWith: "#newlist",
+          placeholder: function(element) {
+                console.log(element.text());
+                $('#itemlist').append("<div class='tags k-block move'>"+element.text()+" </div>");
+                $('#itemlist').children('div').each(function (index) {
+                 //alert(this.value); // "this" is the current element in the loop
+                 console.log( index + ": " + $( this ).text() );
+
+                });
+                return element.clone().css({
+                    "opacity": 0.3,
+                    "border": "1px dashed #000000"
+                });
+            },
+            // end: function (e) {
+            //    console.log("dropped 1");
+            //    if (e.action === "receive") {
+            //    var item = $("<div>" + e.item.text() + "</div>");
+            //    if (e.newindex === 0) item.insertBefore("#sortable.items[0]", this.element);
+            //    else item.insertAfter("#sortable div:nth(" + e.newIndex + ")", this.element);
+            //    e.preventDefault();
+            //    }
+            // },
+            hint: function(element) {
+                return $("<span></span>")
+                        .text(element.text())
+                        .css("color", "#FF0000")},
+          change: function(e) {
+            var s = $("#itemlist").data("kendoListView").dataSource.view().length;
+            var st = $("#newlist").data("kendoListView").dataSource.view().length;
+            //console.log(e.text());
+            console.log($("#newlist").children().length);
+            //console.log($("#newlist").val());
+            // console.log("THIS IS "+s);
+            // console.log(allitems_list.length);
+            // console.log("THIS IS "+st);
+            // console.log(newitems_list.length);
+            //console.log($('#newlist').length);
+                        // var skip = newitems_datasource.skip(),
+                        //     oldIndex = e.oldIndex + skip,
+                        //     newIndex = e.newIndex + skip,
+                        //     data = newitems_datasource.data(),
+                        //     dataItem = newitems_datasource.getByUid(e.item.data("uid"));
+                        //     newitems_datasource.remove(dataItem);
+                        //     newitems_datasource.insert(newIndex, dataItem);
+                    }
+          // dragenter: function (e) {
+          //   e.draggable.hint.css("opacity", 0.5);
+          // },
+          // dragleave: function (e) {
+          //   e.draggable.hint.css("opacity", 1);
+          // },
+          // drop: function (e) {
+          //   var item = allitems_datasource.getByUid(e.draggable.hint.data().uid);            
+          //   var count = 0;
+          //   for (var i = 0; i < newitems_list.length; i++) {
+          //     if (item.Name == newitems_list[i].Name) {
+          //       if (count == 0) {
+          //         newitems_list.splice(i, 1);
+          //         var data = $("#newlist").data("kendoListView").dataSource.data();
+          //         var total = data.splice(i, 1);                  
+          //         count = 1;
+          //       }
+          //     }
+          //   }
+          // }
+        });
+
+      $('#newlist').kendoSortable({
+        connectWith: "#itemlist",
+        placeholder: placeholder
+        // dragenter: function (e) {
+        //   e.draggable.hint.css("opacity", 0.5);
+        // },
+        // dragleave: function (e) {
+        //   e.draggable.hint.css("opacity", 1);
+        // },
+        // drop: function(e) {
+        //   $("#window").data("kendoWindow").open();        
+        //   var item = allitems_datasource.getByUid(e.draggable.hint.data().uid);        
+        //     newitems_datasource.add(item);
+        //     newitems_list.push(item);                        
+        // }
+      });
+
+      $("#window").kendoWindow({
+        visible: false,
+      });
+
+      function placeholder(element) {
+                    return $("<li class='list-item' id='placeholder'>Drop Here!</li>");
+                }
+    </script>
+
+    <style>
+
+      .move {
+        cursor: move;
+      }
+
+      .itempanel {
+        width: 300px;
+        height: 400px;
+        border: 3px solid black;
+        border-radius: 3px;
+        cursor: move;
+      }
+
+      .tags {
+        margin: 5px;
+        padding: 5px;
+        color: black;
+      }
+
+      .tagitemcls {
+        width: 24px;
+        margin-left: 0px;
+        margin-top: 5px;
+        padding-top: 6px;
+        padding-bottom: 8px;
+        padding-left: 2px;
+      }
+
+      table>div {
+        border: 1px solid grey;
+      }
+
+    </style>
+
+  </body>
+
+</html>

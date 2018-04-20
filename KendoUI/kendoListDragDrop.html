@@ -24,9 +24,23 @@
    <script>
       $(document).ready(function () {
          $("#listbox").kendoListBox({
+            draggable: {
+               hint: function(element) {
+                  return $("<span></span>")
+                  .text(element.text())
+                  .css("color", "#FF0000");
+               },
+               placeholder: function(element) {
+                  return element.clone().css({
+                     "opacity": 0.3,
+                     "border": "1px solid black"
+                  });
+               }
+            },
             dataSource: [
                { name: "Jane Doe" },
-               { name: "John Doe" }
+               { name: "John Doe" },
+               { name: "Donn Joe" },
             ],
             template: "<div>#:name#</div>",
             toolbar: {
@@ -35,7 +49,7 @@
          });
       });
    </script>
-   
+
 </body>
 
 </html>
