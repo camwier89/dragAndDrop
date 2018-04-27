@@ -106,10 +106,10 @@
          </tr>
          <tr>
             <td>
-               <div id="itemlist" class="itempanel"></div>
+               <div id="itemlist" class="itemlist itempanel"></div>
             </td>
             <td>
-               <div id="newlist" class="itempanel"></div>
+               <div id="newlist" class="newlist itempanel"></div>
             </td>
          </tr>
       </table>
@@ -137,7 +137,7 @@
             <input type="range" min="0" max="60" value="0" class="secslider" id="secRange">
          </div>
          <br />
-         <button>Okay</button>
+         <button id="submittime">Okay</button>
       </div>
    </div>
 
@@ -287,7 +287,7 @@
          <button>Okay</button>
       </div>
    </div>
-   
+
    <div id="TurnOnOff" name="OnOff">
       <div>
          <h2>System On / Off</h2>
@@ -313,16 +313,13 @@
       </div>
    </div>
 
+   <button id="saveList">Save List</button>
 
-
-
-
-
-
-
-
-
-
+   <script>
+         $("#saveList").click(function () {
+               localStorage.setItem("listStorage", JSON.stringify(newitems_list));
+         });
+   </script>
 
    <script>
       var allitems_list = [
@@ -370,15 +367,12 @@
       $('#SetVol').kendoWindow({
             visible: false,
          });
-
       $('#VariableVol').kendoWindow({
             visible: false,
          });
-
       $('#TurnOnOff').kendoWindow({
             visible: false,
-         });
-      
+         });      
 
       $('#itemlist').kendoListView({
          dataSource: allitems_datasource,
@@ -387,12 +381,14 @@
 
       $('#newlist').kendoListView({
          dataSource: newitems_datasource,
+         selectable: true,
          template: "<div class='tags k-block move'>#:Name#</div>"
       });
 
       $('#itemlist').kendoSortable({
          connectWith: "#newlist",
          change: function (e) {
+               
             var sender = e.draggableEvent.sender;
             var senderElement = sender.element;
             var senderId = senderElement.attr('id');
@@ -401,22 +397,18 @@
                var itemlist = $('#itemlist').getKendoListView();
                itemlist.setDataSource(allitems_datasource)
             }
+           
          }
       });
 
       $('#newlist').kendoSortable({
          connectWith: "#itemlist",
-         change: function (e) {           
+         change: function (e) {                             
             var sender = e.draggableEvent.sender;
             var senderElement = sender.element;
             var senderId = senderElement.attr('id');
-
-            if (senderId === 'itemlist') {
-               var itemlist = $('#itemlist').getKendoListView();
-               itemlist.setDataSource(allitems_datasource)
-            }         
-         },
-         end: function(e) {
+            var text = e.item[0].innerText;             
+            var area = senderId;
             var howLong = $("#HowLong").data("kendoWindow");
             var playMusic = $('#PlayMusic').data("kendoWindow");
             var sayPrayer = $('#SayPrayer').data("kendoWindow");
@@ -427,47 +419,63 @@
             var varVolume = $('#VariableVol').data("kendoWindow");
             var turnOnOff = $('#TurnOnOff').data("kendoWindow");
             var playRndMusic = $('#HowLong').data("kendoWindow");
-            
-            var sender = e.draggableEvent.sender;
-            var senderElement = sender.element;
-            var senderId = senderElement.attr('id');
-            var text = e.item[0].innerText;
-            // console.log(e.item[0].innerText);            
-            if (text == "Pause") {
-               howLong.open();
+
+            $("#newlist .move").each(function (index, val) {
+                     $(e.item[0]).attr('id', text + "_" + index);
+               });            
+
+            if (senderId === 'itemlist') {
+               var itemlist = $('#itemlist').getKendoListView();
+               itemlist.setDataSource(allitems_datasource)
             }
-            if (text == "Play Music") {
-               playMusic.open();
-            }
-            if (text == "Play Random Music") {
-               howLong.open();
-            }
-            if (text == "Play the Radio") {
-               playRadio.open();
-            }
-            if (text == "Say Message") {
-               sayMessage.open();
-            }
-            if (text == "Say Prayer") {
-               sayPrayer.open();
-            }
-            if (text == "Set System Volume") {
-               setVolume.open();
-            }
-            if (text == "Variable Volume") {
-               varVolume.open();
-            }
-            if (text == "Run a Program") {
-               runProgram.open();
-            }
-            if (text == "System On/Off") {
-               turnOnOff.open();
-            }
-            
-         }        
+            if (text == "Pause" && area == "itemlist") {
+                     howLong.open();
+                     area = "";
+               }
+               if (text == "Play Music" && area == "itemlist") {
+                     playMusic.open();
+                     area = "";
+               }
+               if (text == "Play Random Music" && area == "itemlist") {
+                     howLong.open();
+                     area = "";
+               }
+               if (text == "Play the Radio" && area == "itemlist") {
+                     playRadio.open();
+                     area = "";
+               }
+               if (text == "Say Message" && area == "itemlist") {
+                     sayMessage.open();
+                     area = "";
+               }
+               if (text == "Say Prayer" && area == "itemlist") {
+                     sayPrayer.open();
+                     area = "";
+               }
+               if (text == "Set System Volume" && area == "itemlist") {
+                     setVolume.open();
+                     area = "";
+               }
+               if (text == "Variable Volume" && area == "itemlist") {
+                     varVolume.open();
+                     area = "";
+               }
+               if (text == "Run a Program" && area == "itemlist") {
+                     runProgram.open();
+                     area = "";
+               }
+               if (text == "System On/Off" && area == "itemlist") {
+                     turnOnOff.open();
+                     area = "";
+               }        
+         },             
       });
 
-      
+      var targetTag = 
+
+      $("#submittime").click(function() {
+
+      })   
 
    </script>
 
@@ -503,7 +511,7 @@
       }
 
       table>div {
-         border: 1px solid grey;
+         border: 1px solid black;
       }
 
       /* The switch - the box around the slider */

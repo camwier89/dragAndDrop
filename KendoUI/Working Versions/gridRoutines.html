@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+   <title>Saved Routines</title>
+   <meta charset="utf-8" />   
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.common.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.rtl.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.default.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.mobile.all.min.css">
+   <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/jszip.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.all.min.js"></script>
+   
+
+</head>
+
+<body>
+
+   <h1>Current Saved Routines</h1>
+
+   <div id="routines">
+      <div id="grid"></div>
+   </div>
+
+   <br />
+
+   <button id="edit">EDIT</button>
+   <button id="delete">DELETE</button>
+   <button id="add">ADD</button>
+
+   <div id="AreYouSure">
+      <p>Are you sure you want to delete this routine?</p>
+      <br />
+      <button id="confirm">YES</button>
+      <button id="deny">NO</button>
+   </div>
+
+   <script>
+      var Routines = [
+         { routine: "Routine 1", createdOn: "24/04/2018", createdBy: "Cameron"},
+         { routine: "Routine 2", createdOn: "23/04/2018", createdBy: "Terry"},
+         { routine: "Routine 3", createdOn: "23/04/2018", createdBy: "Admin 1"},
+         { routine: "Routine 4", createdOn: "21/04/2018", createdBy: "Terry"},
+         { routine: "Routine 5", createdOn: "21/04/2018", createdBy: "Cameron"},
+         { routine: "Routine 6", createdOn: "21/04/2018", createdBy: "Terry"},
+         { routine: "Routine 7", createdOn: "19/04/2018", createdBy: "Cameron"},
+         { routine: "Routine 8", createdOn: "15/04/2018", createdBy: "Admin 1"},
+         { routine: "Routine 9", createdOn: "15/04/2018", createdBy: "Terry"},
+         { routine: "Routine A", createdOn: "14/04/2018", createdBy: "Terry"},
+         { routine: "Routine B", createdOn: "12/04/2018", createdBy: "Terry"},
+         { routine: "Routine C", createdOn: "12/04/2018", createdBy: "Admin 1"},
+         { routine: "Routine D", createdOn: "12/04/2018", createdBy: "Cameron"},
+         { routine: "Routine E", createdOn: "09/04/2018", createdBy: "Terry"},
+         { routine: "Routine F", createdOn: "09/04/2018", createdBy: "Cameron"},
+         { routine: "Routine G", createdOn: "08/04/2018", createdBy: "Cameron"},
+         { routine: "Routine H", createdOn: "08/04/2018", createdBy: "Terry"},
+         { routine: "Routine I", createdOn: "08/04/2018", createdBy: "Cameron"},
+         { routine: "Routine J", createdOn: "07/04/2018", createdBy: "Admin 1"},
+         { routine: "Routine K", createdOn: "05/04/2018", createdBy: "Admin 1"},
+         { routine: "Routine L", createdOn: "05/04/2018", createdBy: "Cameron"},
+         { routine: "Routine M", createdOn: "03/04/2018", createdBy: "Terry"},
+         { routine: "Routine N", createdOn: "01/04/2018", createdBy: "Cameron"},         
+         ];
+   
+      $(function() {
+         $("#grid").kendoGrid({
+            columns: [ {title: "Routine", field: "routine"},
+            {title: "Created On", field: "createdOn"},
+            {title: "Created By", field: "createdBy"}],
+            dataSource: {
+               data: Routines,
+               pageSize: 10,
+            },
+            height: 300,
+            scrollable: true,
+            pageable: true,
+            sortable: true,
+            selectable: true,
+         });
+         $("#AreYouSure").kendoWindow({
+            visible: false,
+         });
+         var prompt = $("#AreYouSure").data("kendoWindow");
+         $("#delete").click(function() {
+            prompt.open();
+         });
+         $("#deny").click(function() {
+            prompt.close();
+         });
+         $("#confirm").click(function() {
+            $(".k-state-selected tr").remove();
+            prompt.close();             
+         });
+      });   
+   </script>
+
+</body>
+
+</html>

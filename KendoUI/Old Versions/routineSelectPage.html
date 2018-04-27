@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Your Routines</title>
+
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.common.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.rtl.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.default.min.css">
+   <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.mobile.all.min.css">
+   
+   <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/angular.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/jszip.min.js"></script>
+   <script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.all.min.js"></script>
+
+   <script type="text/x-kendo-tmpl" id="mappedtagtemplate">    
+      <div style=""display:inline-block"">
+      <div class="tags k-block"> #:Name# </div>
+      </div>
+   </script>
+
+</head>
+
+<body>
+      
+   <h1>Your Current Saved Routines</h1>
+      <div>         
+         <div id="routineslist" class="routineslist itempanel"></div>         
+      </div><br />
+
+      <button id="delete">Delete Routine</button><br />
+
+      <button id="addnew">Add New Routine</button><br />
+
+   <script>
+   
+   var routines_list = [
+         { 'ID': 001, 'Name': "Morning Routine 23.04.2018" },
+         { 'ID': 002, 'Name': "New Routine 23.03.2018" },
+         { 'ID': 003, 'Name': "Evening Routine 18.02.2018" },
+         { 'ID': 004, 'Name': "Holiday Routine 20.12.2017" },         
+      ];
+      var routines_datasource = new kendo.data.DataSource({
+         data: routines_list
+      });
+
+   $('#routineslist').kendoListView({
+      dataSource: routines_datasource,
+      template: "<div class='tags k-block move'>#:Name#</div>"
+   });
+
+   $('#routineslist').kendoSortable();
+
+   $("#delete").click(function () {
+         console.log("rm click")
+         $("#routineslist div").eq(0).remove();
+      });
+   
+   </script>
+
+   <style>
+   
+   #routineslist {
+         border: 1px solid grey;
+         width: 300px;
+         height: 400px;
+      }
+
+   </style>
+
+</body>
+</html>
